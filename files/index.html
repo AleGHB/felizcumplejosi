@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#12141f">
+<title>Feliz Cumple Josiii!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="ambient" id="ambient" aria-hidden="true"></div>
+<div class="burst-layer" id="burst-layer" aria-hidden="true"></div>
+
+<!-- ===================== REPRODUCTOR DE MÚSICA ===================== -->
+<div class="music" id="music">
+  <button class="music__toggle" id="music-toggle" aria-label="Música" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M9 18V5l10-2v13"/>
+      <circle cx="6.5" cy="18" r="2.5"/>
+      <circle cx="16.5" cy="16" r="2.5"/>
+    </svg>
+  </button>
+
+  <div class="music__menu is-hidden" id="music-menu" role="menu">
+    <p class="music__title">Música</p>
+    <ul class="music__list" id="music-list"></ul>
+    <button class="music__stop" id="music-stop">Detener</button>
+  </div>
+</div>
+
+<audio id="audio-player" preload="none"></audio>
+
+<!-- ============================================================
+     CONTENIDO DE LA CARTA — se usa en DOS lugares automáticamente:
+     la carta de apertura y la pestaña "Carta" del dashboard.
+     EDITAR SOLO AQUÍ.
+     ============================================================ -->
+<template id="letter-template">
+  <p class="card__eyebrow">Para</p>
+  <h2 class="card__name">Joss</h2>
+  <div class="card__body">
+    <p>
+      [Escribe aquí tu mensaje de cumpleaños. Puede ser tan largo o corto como
+      quieras — este espacio se ajusta solo. Cuéntale por qué es especial para
+      ti, algún recuerdo bonito, o simplemente lo mucho que la quieres.]
+    </p>
+    <p>
+      [Puedes agregar un segundo párrafo aquí si lo necesitas.]
+    </p>
+  </div>
+  <p class="card__signature">Ale, Ali y Any 💗</p>
+</template>
+
+<!-- ===================== PANTALLA 1: LOCKER / PIN ===================== -->
+<section id="lock" class="screen screen--lock" aria-label="Introduce el PIN">
+  <div class="lock">
+    <span class="lock__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="10.5" width="16" height="10.5" rx="2"/>
+        <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>
+      </svg>
+    </span>
+
+    <!-- EDITAR: la pista que le das para adivinar el PIN -->
+    <p class="lock__hint">[Pista: la fecha de tu cumpleaños, en formato DDMM]</p>
+
+    <div class="lock__dots" id="pin-dots" aria-live="polite" aria-label="PIN introducido">
+      <span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span>
+    </div>
+
+    <p class="lock__error" id="pin-error" role="alert"></p>
+
+    <div class="keypad" id="keypad">
+      <button class="key" data-key="1">1</button>
+      <button class="key" data-key="2">2</button>
+      <button class="key" data-key="3">3</button>
+      <button class="key" data-key="4">4</button>
+      <button class="key" data-key="5">5</button>
+      <button class="key" data-key="6">6</button>
+      <button class="key" data-key="7">7</button>
+      <button class="key" data-key="8">8</button>
+      <button class="key" data-key="9">9</button>
+      <span class="key key--empty" aria-hidden="true"></span>
+      <button class="key" data-key="0">0</button>
+      <button class="key key--del" data-key="del" aria-label="Borrar">&#9003;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PANTALLA 2: EXPLOSIÓN FLORAL ===================== -->
+<section id="bloom" class="screen screen--bloom is-hidden" aria-label="Sorpresa">
+  <p class="bloom__text" id="bloom-text">omggg eres el cumpleaños¡¡¡</p>
+</section>
+
+<!-- ===================== PANTALLA 3: ATRAPAR FLORES ===================== -->
+<section id="game" class="screen screen--game is-hidden" aria-label="Juego: atrapa las flores">
+
+  <!-- Intro -->
+  <div class="catch-intro" id="catch-intro">
+    <h2 class="catch-intro__title">Atrapa las flores</h2>
+    <p class="catch-intro__text">
+      Mueve la canasta con el dedo y atrapa las flores que caen.<br>
+      Junta <strong id="catch-goal-text">12</strong> para armar tu ramo.
+    </p>
+    <button class="game-btn" id="catch-start">Empezar</button>
+  </div>
+
+  <!-- Área de juego -->
+  <div class="catch is-hidden" id="catch-area">
+    <div class="catch__hud">
+      <span class="catch__count"><span id="catch-score">0</span> / <span id="catch-target">12</span></span>
+      <div class="catch__bar"><span class="catch__bar-fill" id="catch-bar"></span></div>
+    </div>
+    <div class="catch__field" id="catch-field">
+      <div class="catch__basket" id="catch-basket" aria-hidden="true">&#128230;</div>
+    </div>
+  </div>
+
+  <!-- Mensaje final desbloqueado -->
+  <div class="catch-win is-hidden" id="catch-win">
+    <p class="catch-win__bouquet" aria-hidden="true">&#128144;</p>
+    <!-- EDITAR: el mensaje que se desbloquea al completar el ramo -->
+    <p class="catch-win__text">Bien ahí Josi, como siempre el cumpleaños haciendo de las suyas... Presiona continuar para continuar pues pa ke más si no eso?.</p>
+    <button class="game-btn" id="catch-continue">Continuar</button>
+  </div>
+
+</section>
+
+<!-- ===================== PANTALLA 4: CARTA ===================== -->
+<section id="letter-screen" class="screen screen--letter is-hidden" aria-label="Carta de cumpleaños">
+  <div class="envelope" id="envelope" aria-hidden="true">
+    <div class="envelope__back"></div>
+    <div class="envelope__flap"></div>
+    <div class="envelope__front"></div>
+  </div>
+
+  <article class="card is-hidden" id="letter-card">
+    <div class="card__content" data-letter-slot></div>
+    <button id="continue-btn" class="text-btn">Continuar</button>
+  </article>
+</section>
+
+<!-- ===================== PANTALLA 5: DASHBOARD ===================== -->
+<section id="dashboard" class="screen screen--dashboard is-hidden" aria-label="Panel principal">
+
+  <nav class="tabs" id="tabs" aria-label="Secciones">
+    <button class="tab is-active" data-panel="panel-carta">Carta</button>
+    <button class="tab" data-panel="panel-memorama">Memorama</button>
+    <button class="tab" data-panel="panel-trivia">Trivia</button>
+    <button class="tab" data-panel="panel-presentacion">Revista</button>
+  </nav>
+
+  <div class="panels">
+
+    <div class="panel is-active" id="panel-carta">
+      <article class="card card--inline">
+        <div class="card__content" data-letter-slot></div>
+      </article>
+    </div>
+
+    <div class="panel" id="panel-memorama">
+      <h2 class="panel__title">Memorama</h2>
+      <p class="panel__status" id="memo-status">Movimientos: 0</p>
+      <div class="memo-board" id="memo-board" aria-label="Tablero de memorama"></div>
+      <button class="text-btn" id="memo-reset">Reiniciar juego</button>
+    </div>
+
+    <div class="panel" id="panel-trivia">
+      <h2 class="panel__title">Trivia</h2>
+      <div id="trivia-active">
+        <p class="panel__status" id="trivia-progress">Pregunta 1 de 5</p>
+        <div class="trivia-head">
+          <span class="trivia-chip" id="trivia-chip"></span>
+        </div>
+        <p class="trivia-question" id="trivia-question"></p>
+        <div class="trivia-options" id="trivia-options"></div>
+      </div>
+      <div id="trivia-result" class="is-hidden">
+        <p class="trivia-score" id="trivia-score"></p>
+        <button class="text-btn" id="trivia-reset">Volver a intentar</button>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-presentacion">
+      <h2 class="panel__title">Revista</h2>
+      <div class="slides-wrapper" id="slides-wrapper">
+        <!-- EDITAR: reemplaza el src con el enlace de inserción de tu Canva -->
+        <iframe id="canva-frame"
+          src="https://www.canva.com/design/DAHVRnURj3g/hsiJ51SJbDNt55Ua-443PA/view?utm_content=DAHVRnURj3g&utm_campaign=designshare&utm_medium=link&utm_source=viewer"
+          allow="fullscreen" loading="lazy" title="Presentación"></iframe>
+      </div>
+      <button class="text-btn" id="fullscreen-btn">Ver en pantalla completa</button>
+    </div>
+
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

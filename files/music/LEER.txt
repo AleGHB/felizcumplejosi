@@ -1,0 +1,13 @@
+Pon aquí tus canciones en formato .mp3 con estos nombres exactos:
+
+  cancion1.mp3
+  cancion2.mp3
+  cancion3.mp3
+  cancion4.mp3
+
+Si quieres más o menos canciones, o nombres distintos, edita el arreglo
+SONGS al inicio de script.js. Ahí también se cambian los títulos que se
+muestran en el menú.
+
+Nota: GitHub tiene un límite de 100 MB por archivo, así que mantén los
+mp3 por debajo de eso (una canción normal pesa entre 3 y 8 MB).

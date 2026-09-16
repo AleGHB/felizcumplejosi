@@ -1,0 +1,16 @@
+Pon aquí tus 8 imágenes del memorama con estos nombres exactos:
+
+  foto1.jpg
+  foto2.jpg
+  foto3.jpg
+  foto4.jpg
+  foto5.jpg
+  foto6.jpg
+  foto7.jpg
+  foto8.jpg
+
+Recomendación: imágenes cuadradas (por ejemplo 400x400 px) y de menos de
+300 KB cada una, para que carguen rápido en el celular.
+
+Si prefieres otros nombres o .png en vez de .jpg, cambia las rutas en el
+arreglo MEMO_ITEMS al inicio de script.js.
