@@ -54,7 +54,7 @@ const TRIVIA_QUESTIONS = [
     color: '#FFD700',
     question: '¿Qué día fuimos a ver la peli de Super Mario Galaxy?',
     options: ['4 de abril', '30 de marzo', '10 de abril'],
-    correct: 2,
+    correct: 0,
   },
   {
     difficulty: 'Media',
